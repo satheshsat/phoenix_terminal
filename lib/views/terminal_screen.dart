@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:xterm/xterm.dart';
@@ -151,6 +152,11 @@ class _TerminalScreenState extends State<TerminalScreen> {
                         fontFamily: GoogleFonts.jetBrainsMono().fontFamily ?? 'monospace',
                       ),
                       autofocus: true,
+                      // Flutter on Windows rejects xterm's text input client
+                      // when viewId is omitted, so typed characters never arrive.
+                      // Hardware key events still produce text.
+                      hardwareKeyboardOnly: !kIsWeb &&
+                          defaultTargetPlatform == TargetPlatform.windows,
                     ),
                   ),
           ),
